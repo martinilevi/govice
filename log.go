@@ -77,7 +77,7 @@ func NewLogger() *Logger {
 
 
 // NewLoggerWithOutput to create a Logger to a different output than stdout.
-func NewLoggerWithOutput(o io.Writer) {
+func NewLoggerWithOutput(o io.Writer) *Logger {
 	return &Logger{
 		out:      o,
 		logLevel: defaultLogLevel,
