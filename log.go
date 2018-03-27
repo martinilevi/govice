@@ -109,12 +109,12 @@ func (l *Logger) GetLevel() string {
 	return LogLevelNames[l.logLevel]
 }
 
-// SetOutput to set the log output descriptor
+// SetOutput to set the log writer
 func (l *Logger) SetOutput(o io.Writer) {
 	l.out = o
 }
 
-// GetOutput to get the log output descriptor
+// GetOutput to get the log writer
 func (l *Logger) GetOutput(o io.Writer) {
 	return l.out
 }
