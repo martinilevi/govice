@@ -23,6 +23,10 @@ import (
 	"strings"
 	"testing"
 	"time"
+	"os"
+	"bufio"
+	"io/ioutil"
+	"encoding/json"
 )
 
 func TestLevelByName(t *testing.T) {
@@ -67,6 +71,55 @@ func TestLoggerLevel(t *testing.T) {
 	// Restore the default log level for other tests
 	SetDefaultLogLevel("INFO")
 }
+
+func TestLoggerOutput(t *testing.T) {
+	const TestFile = "/tmp/random.log"
+	fd, err := os.Create(TestFile)
+	if err != nil {
+		t.Errorf("Couldn't create %s file: %s", TestFile, err.Error())
+		return
+	}
+
+	writer := bufio.NewWriter(fd)
+	logger := NewLoggerWithOutput(writer)
+	expectedMsg := "hola"
+	logger.Info(expectedMsg)
+	writer.Flush()
+
+	content, err := ioutil.ReadFile(TestFile)
+	if err != nil {
+		t.Errorf("Couldn't read %s file: %s", TestFile, err.Error())
+		return
+	}
+
+	parsed := map[string]interface{}{}
+
+	err = json.Unmarshal(content, &parsed)
+	if err != nil {
+		t.Errorf("Couldn't unmarshal %s file: %s", TestFile, err.Error())
+		return
+	}
+
+	expectedLevel := logger.GetLevel()
+	gotLevel := parsed["lvl"].(string)
+	if expectedLevel != gotLevel {
+		t.Errorf("Expecting level \"%s\", got \"%s\" instead.", expectedLevel, gotLevel)
+	}
+
+	gotMsg := parsed["msg"].(string)
+	if expectedMsg != gotMsg {
+		t.Errorf("Expecting msg \"%s\", got \"%s\" instead.", expectedMsg, gotMsg)
+	}
+
+	logger.SetOutput(os.Stdout)
+
+	new := logger.GetOutput()
+
+	if new != os.Stdout {
+		t.Error("Not expected output writer interface")
+	}
+}
+
 
 func TestLoggerContext(t *testing.T) {
 	logger := NewLogger()
