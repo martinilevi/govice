@@ -115,7 +115,7 @@ func (l *Logger) SetOutput(o io.Writer) {
 }
 
 // GetOutput to get the log writer
-func (l *Logger) GetOutput(o io.Writer) {
+func (l *Logger) GetOutput() io.Writer {
 	return l.out
 }
 
