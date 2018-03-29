@@ -75,15 +75,6 @@ func NewLogger() *Logger {
 	}
 }
 
-
-// NewLoggerWithOutput to create a Logger to a different output than stdout.
-func NewLoggerWithOutput(o io.Writer) *Logger {
-	return &Logger{
-		out:      o,
-		logLevel: defaultLogLevel,
-	}
-}
-
 // SetDefaultLogLevel sets the default log level. This default can be overridden with SetLevel method.
 func SetDefaultLogLevel(level string) {
 	defaultLogLevel = levelByName(level)
@@ -110,12 +101,12 @@ func (l *Logger) GetLevel() string {
 }
 
 // SetOutput to set the log writer
-func (l *Logger) SetOutput(o io.Writer) {
+func (l *Logger) SetWriter(o io.Writer) {
 	l.out = o
 }
 
 // GetOutput to get the log writer
-func (l *Logger) GetOutput() io.Writer {
+func (l *Logger) GetWriter() io.Writer {
 	return l.out
 }
 

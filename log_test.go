@@ -81,7 +81,8 @@ func TestLoggerOutput(t *testing.T) {
 	}
 
 	writer := bufio.NewWriter(fd)
-	logger := NewLoggerWithOutput(writer)
+	logger := NewLogger()
+	logger.SetWriter(writer)
 	expectedMsg := "hola"
 	logger.Info(expectedMsg)
 	writer.Flush()
@@ -111,9 +112,9 @@ func TestLoggerOutput(t *testing.T) {
 		t.Errorf("Expecting msg \"%s\", got \"%s\" instead.", expectedMsg, gotMsg)
 	}
 
-	logger.SetOutput(os.Stdout)
+	logger.SetWriter(os.Stdout)
 
-	new := logger.GetOutput()
+	new := logger.GetWriter()
 
 	if new != os.Stdout {
 		t.Error("Not expected output writer interface")
