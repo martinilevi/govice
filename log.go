@@ -100,12 +100,12 @@ func (l *Logger) GetLevel() string {
 	return LogLevelNames[l.logLevel]
 }
 
-// SetOutput to set the log writer
+// SetWriter to set the log writer
 func (l *Logger) SetWriter(o io.Writer) {
 	l.out = o
 }
 
-// GetOutput to get the log writer
+// GetWriter to get the log writer
 func (l *Logger) GetWriter() io.Writer {
 	return l.out
 }
